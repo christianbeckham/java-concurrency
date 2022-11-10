@@ -22,13 +22,16 @@ public class Account {
         this.amountWithdrawn = amountWithdrawn;
     }
 
-    public void withdraw(int amount) {
+    public synchronized void withdraw(int amount) throws InterruptedException {
+        String threadName = Thread.currentThread().getName();
+
         if (amount <= this.balance) {
+            Thread.sleep(50);
             this.balance -= amount;
             this.amountWithdrawn += amount;
-            System.out.println(amount + " withdrawn. New balance " + this.balance + ". Total withdrawn: " + this.amountWithdrawn);
+            System.out.println(amount + " withdrawn by " + threadName + ". New balance " + this.balance + ". Total withdrawn: " + this.amountWithdrawn);
         } else {
-            System.out.println("Insufficient funds. Total withdrawn: " + this.amountWithdrawn);
+            System.out.println("Insufficient funds for " + threadName + ". Total withdrawn: " + this.amountWithdrawn);
         }
     }
 }
